@@ -1,0 +1,77 @@
+body {
+    background-color: #f5f6f8;
+    color: #222;
+}
+
+.navbar-trek {
+    background-color: #2f6f4e;
+}
+.navbar-trek .navbar-brand,
+.navbar-trek .nav-link {
+    color: #fff;
+}
+.navbar-trek .nav-link:hover {
+    color: #d8f0e2;
+}
+
+.page-title {
+    color: #2f6f4e;
+    margin-bottom: 1.25rem;
+}
+
+.card {
+    border: 1px solid #e6e6e6;
+}
+
+.stat-card .stat-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2f6f4e;
+}
+
+.btn-trek {
+    background-color: #2f6f4e;
+    border-color: #2f6f4e;
+    color: #fff;
+}
+.btn-trek:hover {
+    background-color: #245740;
+    border-color: #245740;
+    color: #fff;
+}
+
+.text-trek {
+    color: #2f6f4e;
+}
+
+.bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.bar-label {
+    width: 40%;
+    font-size: 0.875rem;
+}
+.bar-track {
+    flex: 1;
+    background: #e6e6e6;
+    border-radius: 3px;
+    height: 18px;
+}
+.bar-fill {
+    background: #2f6f4e;
+    height: 100%;
+    border-radius: 3px;
+    min-width: 2px;
+}
+.bar-value {
+    width: 2.5rem;
+    text-align: right;
+    font-size: 0.8rem;
+}
+
+footer {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
