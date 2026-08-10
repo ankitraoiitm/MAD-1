@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Staff Dashboard{% endblock %}
+{% block content %}
+<h4 class="page-title">Welcome, {{ current_user.name }}</h4>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card stat-card text-center p-3">
+            <div class="stat-value">{{ treks|length }}</div>
+            <div class="text-muted">Assigned Treks</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card stat-card text-center p-3">
+            <div class="stat-value">{{ total_participants }}</div>
+            <div class="text-muted">Total Participants</div>
+        </div>
+    </div>
+</div>
+
+<h5 class="mb-3">Assigned Treks</h5>
+{% if treks %}
+<div class="row g-3">
+    {% for t in treks %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5>{{ t.name }}</h5>
+                    <span class="badge bg-{{ t.status_badge }}">{{ t.status }}</span>
+                </div>
+                <p class="text-muted mb-1">{{ t.location }}
+                    <span class="badge bg-{{ t.difficulty_badge }}">{{ t.difficulty }}</span></p>
+                <p class="mb-1">{{ t.booked_count }} registered - {{ t.available_slots }}/{{ t.total_slots }} slots free</p>
+                {% if t.start_date %}<p class="small text-muted mb-0">
+                    {{ t.start_date.strftime('%d %b') }} - {{ t.end_date.strftime('%d %b %Y') if t.end_date }}</p>{% endif %}
+            </div>
+            <div class="card-footer bg-white">
+                <a href="{{ url_for('staff_trek_manage', trek_id=t.id) }}"
+                   class="btn btn-trek btn-sm w-100">Manage Trek</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">You have no treks assigned yet. The admin will assign treks to you.</div>
+{% endif %}
+{% endblock %}
