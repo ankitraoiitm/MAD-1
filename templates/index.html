@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}TrekManager{% endblock %}
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded border text-center">
+    <h1 class="page-title">Trekking Management Application</h1>
+    <p class="lead">Discover guided treks, book your spot, and track your adventures.</p>
+    <a href="{{ url_for('register') }}" class="btn btn-trek me-2">Get Started</a>
+    <a href="{{ url_for('login') }}" class="btn btn-outline-secondary">Login</a>
+</div>
+
+<h4 class="page-title">Open Treks</h4>
+{% if treks %}
+<div class="row g-3">
+    {% for trek in treks %}
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">{{ trek.name }}</h5>
+                    <span class="badge bg-{{ trek.difficulty_badge }}">{{ trek.difficulty }}</span>
+                </div>
+                <p class="text-muted mb-1">{{ trek.location }}</p>
+                <p class="mb-1">{{ trek.duration }} days - {{ trek.available_slots }} slots left</p>
+                <p class="fw-bold text-trek mb-0">Rs. {{ '%.0f'|format(trek.price) }}</p>
+            </div>
+            <div class="card-footer bg-white">
+                <a href="{{ url_for('login') }}" class="btn btn-trek btn-sm w-100">Login to Book</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">No open treks right now. Check back soon.</p>
+{% endif %}
+{% endblock %}

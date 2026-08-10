@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Register - TrekManager{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <h4 class="page-title">Create an account</h4>
+                <form method="post" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="name" class="form-control" required
+                               value="{{ form.name or '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required
+                               value="{{ form.email or '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contact Number</label>
+                        <input type="text" name="contact" class="form-control"
+                               value="{{ form.contact or '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required minlength="6">
+                        <div class="form-text">At least 6 characters.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Register as</label>
+                        <select name="role" class="form-select">
+                            <option value="user" {{ 'selected' if form.role != 'staff' }}>User (Trekker)</option>
+                            <option value="staff" {{ 'selected' if form.role == 'staff' }}>Trek Staff (needs admin approval)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-trek w-100">Register</button>
+                </form>
+                <hr>
+                <p class="text-center mb-0">Already registered?
+                    <a href="{{ url_for('login') }}">Login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
