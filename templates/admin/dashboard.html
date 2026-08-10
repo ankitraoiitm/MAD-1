@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h4 class="page-title">Admin Dashboard</h4>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card stat-card text-center p-3">
+            <div class="stat-value">{{ stats.treks }}</div>
+            <div class="text-muted">Total Treks</div>
+            <small class="text-success">{{ stats.open_treks }} open</small>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card stat-card text-center p-3">
+            <div class="stat-value">{{ stats.users }}</div>
+            <div class="text-muted">Trekkers</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card stat-card text-center p-3">
+            <div class="stat-value">{{ stats.staff }}</div>
+            <div class="text-muted">Trek Staff</div>
+            <small class="text-warning">{{ stats.pending_staff }} pending</small>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card stat-card text-center p-3">
+            <div class="stat-value">{{ stats.bookings }}</div>
+            <div class="text-muted">Total Bookings</div>
+            <small class="text-success">{{ stats.active_bookings }} active</small>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Most Popular Treks</h5>
+                {% if popular %}
+                    {% for t in popular %}
+                    <div class="bar-row">
+                        <div class="bar-label text-truncate">{{ t.name }}</div>
+                        <div class="bar-track">
+                            <div class="bar-fill"
+                                 style="width: {{ (t.bookings|length / max_bookings * 100) if max_bookings else 0 }}%"></div>
+                        </div>
+                        <div class="bar-value">{{ t.bookings|length }}</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No data yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Recent Bookings</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead><tr><th>#</th><th>User</th><th>Trek</th><th>Status</th></tr></thead>
+                        <tbody>
+                        {% for b in recent_bookings %}
+                            <tr>
+                                <td>{{ b.id }}</td>
+                                <td>{{ b.user.name }}</td>
+                                <td>{{ b.trek.name }}</td>
+                                <td><span class="badge bg-{{ b.status_badge }}">{{ b.status }}</span></td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="4" class="text-muted">No bookings yet.</td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 d-flex gap-2 flex-wrap">
+    <a href="{{ url_for('admin_trek_new') }}" class="btn btn-trek">Add Trek</a>
+    <a href="{{ url_for('admin_staff') }}" class="btn btn-outline-secondary">Manage Staff</a>
+    <a href="{{ url_for('admin_users') }}" class="btn btn-outline-secondary">Manage Users</a>
+    <a href="{{ url_for('admin_bookings') }}" class="btn btn-outline-secondary">All Bookings</a>
+</div>
+{% endblock %}
