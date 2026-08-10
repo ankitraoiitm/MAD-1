@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}My Bookings{% endblock %}
+{% block content %}
+<h4 class="page-title">My Bookings & History</h4>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr><th>#</th><th>Trek</th><th>Location</th><th>Dates</th>
+                    <th>Booked On</th><th>Status</th><th class="text-end">Action</th></tr>
+            </thead>
+            <tbody>
+            {% for b in bookings %}
+                <tr>
+                    <td>{{ b.id }}</td>
+                    <td>{{ b.trek.name }}
+                        <span class="badge bg-{{ b.trek.difficulty_badge }}">{{ b.trek.difficulty }}</span></td>
+                    <td>{{ b.trek.location }}</td>
+                    <td>{% if b.trek.start_date %}{{ b.trek.start_date.strftime('%d %b') }} -
+                        {{ b.trek.end_date.strftime('%d %b %Y') if b.trek.end_date }}{% else %}-{% endif %}</td>
+                    <td>{{ b.booking_date.strftime('%d %b %Y') }}</td>
+                    <td><span class="badge bg-{{ b.status_badge }}">{{ b.status }}</span></td>
+                    <td class="text-end">
+                        {% if b.status == BOOKING_BOOKED %}
+                        <form method="post" action="{{ url_for('user_cancel', booking_id=b.id) }}"
+                              onsubmit="return confirm('Cancel this booking?');">
+                            <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                        </form>
+                        {% else %}-{% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="7" class="text-center text-muted py-3">
+                    You haven't booked any treks yet.
+                    <a href="{{ url_for('user_treks') }}">Browse treks</a>.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

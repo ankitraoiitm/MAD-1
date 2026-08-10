@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<h4 class="page-title">Hi {{ current_user.name }}</h4>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card stat-card text-center p-3">
+            <div class="stat-value">{{ active|length }}</div>
+            <div class="text-muted">Active Bookings</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card stat-card text-center p-3">
+            <div class="stat-value">{{ bookings|length }}</div>
+            <div class="text-muted">Total Bookings</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card stat-card text-center p-3">
+            <div class="stat-value">{{ open_treks|length }}</div>
+            <div class="text-muted">Treks to Explore</div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Explore Open Treks</h5>
+    <a href="{{ url_for('user_treks') }}" class="btn btn-sm btn-outline-secondary">See all</a>
+</div>
+{% if open_treks %}
+<div class="row g-3">
+    {% for t in open_treks %}
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5>{{ t.name }}</h5>
+                    <span class="badge bg-{{ t.difficulty_badge }}">{{ t.difficulty }}</span>
+                </div>
+                <p class="text-muted mb-1">{{ t.location }}</p>
+                <p class="mb-1">{{ t.duration }} days - {{ t.available_slots }} slots left</p>
+                <p class="fw-bold text-trek mb-0">Rs. {{ '%.0f'|format(t.price) }}</p>
+            </div>
+            <div class="card-footer bg-white">
+                <a href="{{ url_for('user_treks') }}" class="btn btn-trek btn-sm w-100">View & Book</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">No open treks available right now.</p>
+{% endif %}
+{% endblock %}

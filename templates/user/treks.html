@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Browse Treks{% endblock %}
+{% block content %}
+<h4 class="page-title">Browse Treks</h4>
+
+<form class="row g-2 mb-4" method="get">
+    <div class="col-md-4">
+        <input type="text" name="q" value="{{ q }}" class="form-control"
+               placeholder="Search by name or location">
+    </div>
+    <div class="col-md-3">
+        <select name="difficulty" class="form-select">
+            <option value="">All difficulties</option>
+            {% for opt in ['Easy','Moderate','Hard'] %}
+                <option value="{{ opt }}" {{ 'selected' if difficulty == opt }}>{{ opt }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select name="location" class="form-select">
+            <option value="">All locations</option>
+            {% for loc in locations %}
+                <option value="{{ loc }}" {{ 'selected' if location == loc }}>{{ loc }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-trek">Filter</button>
+        {% if q or difficulty or location %}
+            <a href="{{ url_for('user_treks') }}" class="btn btn-link">Clear</a>{% endif %}
+    </div>
+</form>
+
+{% if treks %}
+<div class="row g-3">
+    {% for t in treks %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5>{{ t.name }}</h5>
+                    <span class="badge bg-{{ t.difficulty_badge }}">{{ t.difficulty }}</span>
+                </div>
+                <p class="text-muted mb-1">{{ t.location }}</p>
+                <p class="mb-1">{{ t.duration }} days - {{ t.available_slots }} slots left</p>
+                {% if t.start_date %}<p class="small text-muted mb-1">
+                    {{ t.start_date.strftime('%d %b') }} - {{ t.end_date.strftime('%d %b %Y') if t.end_date }}</p>{% endif %}
+                <p>{{ t.description }}</p>
+                <p class="fw-bold text-trek mb-0">Rs. {{ '%.0f'|format(t.price) }}</p>
+            </div>
+            <div class="card-footer bg-white">
+                {% if t.id in my_trek_ids %}
+                    <button class="btn btn-outline-success btn-sm w-100" disabled>Already Booked</button>
+                {% elif t.available_slots <= 0 %}
+                    <button class="btn btn-secondary btn-sm w-100" disabled>Fully Booked</button>
+                {% else %}
+                    <form method="post" action="{{ url_for('user_book', trek_id=t.id) }}">
+                        <button class="btn btn-trek btn-sm w-100">Book Now</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">No treks match your search. Try adjusting the filters.</div>
+{% endif %}
+{% endblock %}
